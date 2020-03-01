@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %} {{point.pointLabel}} {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 mx-auto">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">{{point.pointKey}}</span>
+                    <span class="section-heading-lower">{{point.pointLabel}}</span>
+                </h2>
+                <p>
+                <ul align="left">
+                    <li>{{point.commercialType}}</li>
+                    <li>{{point.pointType}}</li>
+                    <li>{{point.point_id}}</li>
+                </ul>
+                <h3 class="section-heading mb-4">
+                    <span class="section-heading-upper">Синонимы этой точки</span>
+                </h3>
+                <ul align="left">
+                    {% for sinonim in sinonims%}
+                    <li>{{sinonim.name}}</li>
+                    {% endfor %}
+                </ul>
+<!--                Сюда будем вставлять форму-->
+                <hr>
+                <form method="post">
+                    <span class="section-heading-upper">Добавить новый синоним или написание названия точки</span><br>
+                    {% csrf_token %}
+                    {{ form }}
+
+                    <button type="submit" class="btn btn-primary" id="sendMessageButton">Добавить в базу</button>
+
+                </form>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

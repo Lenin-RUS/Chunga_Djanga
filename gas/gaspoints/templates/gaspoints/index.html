@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %} Главная {% endblock %}
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-9 mx-auto">
+          <div class="cta-inner text-center rounded">
+            <h2 class="section-heading mb-4">
+              <span class="section-heading-upper">Точки транспортировки газа в Европе</span>
+              <span class="section-heading-lower">ENTSOG</span>
+            </h2>
+            <p>
+            <ul align="left">
+              {% for point in points%}
+            <a href="{% url 'gas:point' id=point.id %}">
+              <li>{{point.pointLabel}}</li>
+            </a>
+              {% endfor %}
+            </ul>
+              </p>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
