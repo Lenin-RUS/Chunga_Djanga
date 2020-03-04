@@ -1,13 +1,18 @@
 from django.db import models
 
-# Create your models here.
-class CommercialType(models.Model):
+
+class AddNameTotable(models.Model):
     name=models.CharField(max_length=32, unique=True)
+    class Meta:
+        abstract=True
+
+
+# Create your models here.
+class CommercialType(AddNameTotable):
     def __str__(self):
         return self.name
 
-class PointType(models.Model):
-    name=models.CharField(max_length=32, unique=True)
+class PointType(AddNameTotable):
     def __str__(self):
         return self.name
 
@@ -20,8 +25,7 @@ class Point(models.Model):
     def __str__(self):
         return self.pointLabel
 
-class Sinonim(models.Model):
-    name=models.CharField(max_length=32, unique=True)
+class Sinonim(AddNameTotable):
     root_point=models.ForeignKey(Point, on_delete=models.CASCADE)
     def __str__(self):
         return self.name

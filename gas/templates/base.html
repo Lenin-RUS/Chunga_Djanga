@@ -43,20 +43,26 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item active px-lg-4">
-                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:index' %}">Список всех точек
-                        <span class="sr-only">(current)</span>
-                    </a>
+<!--                <li class="nav-item px-lg-4">-->
+<!--                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:index' %}">Список всех точек-->
+<!--<!-->
+<!--                    </a>-->
+<!--                </li>-->
+                <li class="nav-item px-lg-4">
+                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:point_list' %}">NEW!!! список всех точек</a>
                 </li>
 <!--                <li class="nav-item px-lg-4">-->
-<!--                    <a class="nav-link text-uppercase text-expanded" href="/">О нас</a>-->
+<!--                     <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:add_point' %}">Добавить точку</a>-->
 <!--                </li>-->
-<!--                 <li class="nav-item px-lg-4">
-                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:add_name' %} ">Добавить синоним к точке</a>
+
+                <li class="nav-item px-lg-4">
+                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:new_point' %}">NEW!!! Добавить точку</a>
                 </li>
                 <li class="nav-item px-lg-4">
-                    <a class="nav-link text-uppercase text-expanded" href="/">Написать письмо</a> -->
+                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:send_mail' %} ">Отправить нам письмо</a>  
+
                 </li>
+
             </ul>
         </div>
     </div>
