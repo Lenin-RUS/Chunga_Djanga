@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %} {{point.pointLabel}} {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 mx-auto">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">{{point.pointKey}}</span>
+                    <span class="section-heading-lower">{{point.pointLabel}}</span>
+                </h2>
+                <p>
+                <ul align="left">
+                    <li>{{point.commercialType}}</li>
+                    <li>{{point.pointType}}</li>
+                    <li>{{point.point_id}}</li>
+                </ul>
+                <a href="{% url 'gas:point_update' pk=point.pk %}">
+                    <button type="button" class="btn btn-warning">Изменить</button>
+                </a>
+                <a href="{% url 'gas:point_delete' pk=point.pk %}">
+                    <button type="button" class="btn btn-danger">Удалить</button>
+                </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
