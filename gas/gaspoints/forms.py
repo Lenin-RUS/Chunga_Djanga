@@ -13,4 +13,11 @@ class SendMail(forms.Form):
 class Add_point(forms.ModelForm):
     class Meta:
         model=Point
-        fields='__all__'
+        exclude = ('user', )
+        # fields='__all__'
+
+
+class NewPoint(forms.Form):
+    class Meta:
+        model=Point
+        exclude = ('user', )

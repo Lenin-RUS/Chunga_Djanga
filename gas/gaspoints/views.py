@@ -14,23 +14,23 @@ def main_view(request):
     return render(request, 'gaspoints/index.html', context={'points': points})
 
 
-def point(request, id):
-    point = get_object_or_404(Point, id=id)
-    sinonim = Sinonim.objects.filter(root_point=id)
-    if request.method == 'POST':
-        form = Sinonim_form(request.POST)
-        if form.is_valid():
-            new_sinonim = form.cleaned_data['point_sinonim']
-            try:
-                Sinonim.objects.create(name=new_sinonim, root_point=Point.objects.filter(id=id).first())
-            except:
-                pass
-            return render(request, 'gaspoints/point.html', context={'point': point, 'sinonims': sinonim, 'form': form})
-        else:
-            return render(request, 'gaspoints/point.html', context={'point': point, 'sinonims': sinonim, 'form': form})
-    else:
-        form = Sinonim_form
-        return render(request, 'gaspoints/point.html', context={'point': point, 'sinonims': sinonim, 'form': form})
+# def point(request, id):
+#     point = get_object_or_404(Point, id=id)
+#     sinonim = Sinonim.objects.filter(root_point=id)
+#     if request.method == 'POST':
+#         form = Sinonim_form(request.POST)
+#         if form.is_valid():
+#             new_sinonim = form.cleaned_data['point_sinonim']
+#             try:
+#                 Sinonim.objects.create(name=new_sinonim, root_point=Point.objects.filter(id=id).first())
+#             except:
+#                 pass
+#             return render(request, 'gaspoints/point.html', context={'point': point, 'sinonims': sinonim, 'form': form})
+#         else:
+#             return render(request, 'gaspoints/point.html', context={'point': point, 'sinonims': sinonim, 'form': form})
+#     else:
+#         form = Sinonim_form
+#         return render(request, 'gaspoints/point.html', context={'point': point, 'sinonims': sinonim, 'form': form})
 
 
 def send_mail(request):
@@ -48,17 +48,18 @@ def send_mail(request):
         return render(request, 'gaspoints/send_mail.html', context={'mail_form': mail_form})
 
 
-def add_point(request):
-    if request.method == 'GET':
-        form = Add_point()
-        return render(request, 'gaspoints/add_point.html', context={'form': form})
-    else:
-        form = Add_point(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/')
-        else:
-            return render(request, 'gaspoints/add_point.html', context={'form': form})
+# def add_point(request):
+#     if request.method == 'GET':
+#         form = Add_point()
+#         return render(request, 'gaspoints/add_point.html', context={'form': form})
+#     else:
+#         form = Add_point(request.POST)
+#         if form.is_valid():
+#             form.instance.user = request.user
+#             form.save()
+#             return HttpResponseRedirect('/')
+#         else:
+#             return render(request, 'gaspoints/add_point.html', context={'form': form})
 
 
 class PointListView(ListView):
@@ -72,13 +73,18 @@ class PointDetailView(DetailView):
 
 
 class PointCreateView(CreateView):
-    fields = '__all__'
+    fields = ('pointKey', 'pointLabel', 'commercialType', 'pointType', 'point_id', )
+    # exclude = ('user', )
     model = Point
     success_url = reverse_lazy('gas:point_list')
     tamplate_name = 'gaspoints/new_point.html'
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
 class PointUpdateView(UpdateView):
-    fields = '__all__'
+    fields = ('pointKey', 'pointLabel', 'commercialType', 'pointType', 'point_id', )
     model = Point
     success_url = reverse_lazy('gas:point_list')
     tamplate_name = 'gaspoints/point_detail.html'

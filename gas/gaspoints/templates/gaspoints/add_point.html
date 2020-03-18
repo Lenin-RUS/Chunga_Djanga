@@ -1,21 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %} Добавить новую точку {% endblock %}
+{% block title %} Добавить новую / изменить точку {% endblock %}
 {% block content %}
 
 <div class="container">
     <div class="row">
         <div class="col-xl-9 mx-auto">
             <div class="cta-inner text-center rounded">
+
                 <h2 class="section-heading mb-4">
-                    <span class="section-heading-upper">Добавьте новую точку</span>
+                    <span class="section-heading-upper">Добавьте новую или измените точку</span>
                 </h2>
                 <p>
 
                     <!--                Сюда будем вставлять форму-->
                 <hr>
                 <form method="post">
-                    <span class="section-heading-upper" align="left">Новая точка</span><br>
+                    <span class="section-heading-upper" align="left">Информация о точке</span><br>
                     {% csrf_token %}
                     {{ form.as_p }}
                     <button type="submit" class="btn btn-primary">Сохранить</button>

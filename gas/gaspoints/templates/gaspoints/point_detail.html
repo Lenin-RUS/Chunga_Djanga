@@ -16,12 +16,23 @@
                     <li>{{point.pointType}}</li>
                     <li>{{point.point_id}}</li>
                 </ul>
+                <p align="left">Точку занес в базу: {{point.user}}</p>
+
+                {% if user.is_authenticated and user == point.user %}
                 <a href="{% url 'gas:point_update' pk=point.pk %}">
                     <button type="button" class="btn btn-warning">Изменить</button>
                 </a>
                 <a href="{% url 'gas:point_delete' pk=point.pk %}">
                     <button type="button" class="btn btn-danger">Удалить</button>
                 </a>
+                {% else %}
+
+                    <button type="button" class="btn btn-warning">Вы не можете изменить эту точку</button>
+
+
+                {% endif %}
+
+
                 </p>
             </div>
         </div>

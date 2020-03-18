@@ -13,7 +13,7 @@
             <p>
             <ul align="left">
               {% for point in points%}
-            <a href="{% url 'gas:point' id=point.id %}">
+            <a href="{% url 'gas:point_detail' pk=point.pk %}">
               <li>{{point.pointLabel}}</li>
             </a>
               {% endfor %}
