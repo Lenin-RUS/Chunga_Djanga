@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %} REGISTER {% endblock %}
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 mx-auto">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">Регистрация на сайте</span>
+                </h2>
+                <p>
+
+                    <!--                Сюда будем вставлять форму-->
+                <hr>
+
+                <div class="input-group" align="left"!important>
+
+
+
+                            <form method="post" >
+                                <span class="section-heading-upper" align="left"><b>Заполните поля</b></span><br>
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-primary">Регистрация</button>
+
+                            </form>
+
+
+                </div>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+
+{% extends "base.html" %}
+
+{% block title %} LOGIN {% endblock %}
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 mx-auto">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">Вход на сайт</span>
+                </h2>
+                <p>
+
+                    <!--                Сюда будем вставлять форму-->
+                <hr>
+                <form method="post">
+                    <span class="section-heading-upper" align="left">Введите логин и пароль</span><br>
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Вход</button>
+
+                </form>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+<!--<div class="input-group mb-3">-->
+<!--    <div class="input-group-prepend">-->
+<!--        <span class="input-group-text" id="basic-addon1">@</span>-->
+<!--    </div>-->
+<!--    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">-->
+<!--</div>-->

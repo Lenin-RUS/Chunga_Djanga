@@ -43,26 +43,42 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav mx-auto">
-<!--                <li class="nav-item px-lg-4">-->
-<!--                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:index' %}">Список всех точек-->
-<!--<!-->
-<!--                    </a>-->
-<!--                </li>-->
+                <!--                <li class="nav-item px-lg-4">-->
+                <!--                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:index' %}">Список всех точек-->
+                <!--<!-->
+                <!--                    </a>-->
+                <!--                </li>-->
                 <li class="nav-item px-lg-4">
-                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:point_list' %}">NEW!!! список всех точек</a>
-                </li>
-<!--                <li class="nav-item px-lg-4">-->
-<!--                     <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:add_point' %}">Добавить точку</a>-->
-<!--                </li>-->
-
-                <li class="nav-item px-lg-4">
-                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:new_point' %}">NEW!!! Добавить точку</a>
-                </li>
-                <li class="nav-item px-lg-4">
-                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:send_mail' %} ">Отправить нам письмо</a>  
-
+                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:point_list' %}">Список всех точек</a>
                 </li>
 
+                {% if user.is_authenticated %}
+                <li class="nav-item px-lg-4">
+                    <p class="nav-link text-uppercase text-expanded">Вы вошли под именем {{user.username}}</p>
+                </li>
+                
+                <li class="nav-item px-lg-4">
+                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:new_point' %}">Добавить точку</a>
+                </li>
+          
+                <li class="nav-item px-lg-4">
+                    <a class="nav-link text-uppercase text-expanded" href="{% url 'users:logout' %}">LOGOUT</a>
+                </li>
+          
+                {% else %}
+          
+                <li class="nav-item px-lg-4">
+                    <a class="nav-link text-uppercase text-expanded" href="{% url 'users:login' %}">LOGIN</a>
+                </li>
+          
+                <li class="nav-item px-lg-4">
+                    <a class="nav-link text-uppercase text-expanded" href="{% url 'users:register' %}">REGISTER</a>
+                </li>
+          
+                {% endif %}
+                <li class="nav-item px-lg-4">
+                    <a class="nav-link text-uppercase text-expanded" href="{% url 'gas:send_mail' %} ">Отправить нам письмо</a>
+                </li>
             </ul>
         </div>
     </div>

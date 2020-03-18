@@ -1,4 +1,5 @@
 from django.db import models
+from my_user_app.models import MyUser
 
 
 class AddNameTotable(models.Model):
@@ -22,10 +23,12 @@ class Point(models.Model):
     commercialType=models.ForeignKey(CommercialType, on_delete=models.CASCADE)
     pointType=models.ForeignKey(PointType, on_delete=models.CASCADE)
     point_id=models.CharField(max_length=32, unique=True)
+    user=models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return self.pointLabel
 
 class Sinonim(AddNameTotable):
     root_point=models.ForeignKey(Point, on_delete=models.CASCADE)
+    user=models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
         return self.name

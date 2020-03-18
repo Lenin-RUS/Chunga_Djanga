@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('gaspoints.urls', namespace='gas'))
+    path('', include('gaspoints.urls', namespace='gas')),
+    path('users/', include('my_user_app.urls', namespace='users'))
 ]
