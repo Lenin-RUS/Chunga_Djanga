@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 
 from .models import Point, Sinonim
@@ -67,17 +68,27 @@ class PointListView(ListView):
     tamplate_name = 'gaspoints/point_list.html'
 
 
-class PointDetailView(DetailView):
+
+
+class PointDetailView(LoginRequiredMixin, DetailView):
     model = Point
     tamplate_name = 'gaspoints/point_detail.html'
 
 
-class PointCreateView(CreateView):
+class PointCreateView(UserPassesTestMixin, CreateView):
     fields = ('pointKey', 'pointLabel', 'commercialType', 'pointType', 'point_id', )
     # exclude = ('user', )
     model = Point
     success_url = reverse_lazy('gas:point_list')
     tamplate_name = 'gaspoints/new_point.html'
+    login_url = 'users:login'
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+    def handle_no_permission(self):
+        return redirect(self.login_url)
+
 
     def form_valid(self, form):
         form.instance.user = self.request.user
