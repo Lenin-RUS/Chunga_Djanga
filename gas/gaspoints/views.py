@@ -68,8 +68,6 @@ class PointListView(ListView):
     tamplate_name = 'gaspoints/point_list.html'
 
 
-
-
 class PointDetailView(LoginRequiredMixin, DetailView):
     model = Point
     tamplate_name = 'gaspoints/point_detail.html'
@@ -88,7 +86,6 @@ class PointCreateView(UserPassesTestMixin, CreateView):
 
     def handle_no_permission(self):
         return redirect(self.login_url)
-
 
     def form_valid(self, form):
         form.instance.user = self.request.user
