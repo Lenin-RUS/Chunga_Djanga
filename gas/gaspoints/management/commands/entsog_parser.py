@@ -11,7 +11,7 @@ class Command(BaseCommand):
         result=requests.get(url).json()
 
         pointType=set([i['pointType'] for i in result['connectionpoints']])
-        # PointType.objects.all().delete()
+
         for i in pointType:
             try:
                 PointType.objects.create(name=str(i))
@@ -19,7 +19,7 @@ class Command(BaseCommand):
                 pass
 
         commercialType=set([i['commercialType'] for i in result['connectionpoints']])
-        # CommercialType.objects.all().delete()
+
         for i in commercialType:
             try:
                 CommercialType.objects.create(name=str(i))
@@ -27,13 +27,13 @@ class Command(BaseCommand):
                 pass
 
 
-        # Point.objects.all().delete()
+
         for i in result['connectionpoints']:
             try:
                 Point.objects.create(pointKey=i['pointKey'], pointLabel=i['pointLabel'], point_id=i['id'],
-                                 commercialType=CommercialType.objects.filter(name=i['commercialType']).first(),
-                                 pointType=PointType.objects.filter(name=i['pointType']).first(),
-                                     user=MyUser.objects.filter(username='Lenin').first())
+                                 commercialType=CommercialType.objects.get(name=i['commercialType']),
+                                 pointType=PointType.objects.get(name=i['pointType']),
+                                     user=MyUser.objects.get(username='Lenin'))
             except:
                 pass
 
@@ -41,8 +41,8 @@ class Command(BaseCommand):
         for i in result['connectionpoints']:
             try:
                 Sinonim.objects.create(name=i['pointLabel'],
-                                       root_point= Point.objects.filter(pointLabel=i['pointLabel']).first(),
-                                       user=MyUser.objects.filter(username='Lenin').first())
+                                       root_point= Point.objects.get(pointLabel=i['pointLabel']),
+                                       user=MyUser.objects.get(username='Lenin'))
             except:
                 pass
 
