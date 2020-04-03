@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %} Парсер новых точек {% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 mx-auto">
+            <div class="cta-inner text-center rounded">
+                {% if  new_points %}
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">Добавлены новые точки транспортировки газа в Европе</span>
+                </h2>
+                <p>
+                <ul align="left">
+                    {% for point in new_points%}
+                        <li>{{point}}</li>
+                    {% endfor %}
+                </ul>
+                </p>
+                {% else %}
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">Новых точек не обнаружено</span>
+                </h2>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

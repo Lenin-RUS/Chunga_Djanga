@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} {{point.pointLabel}} {% endblock %}
+{% block title %} {{ point.pointLabel|upper }} {% endblock %}
 {% block content %}
 <div class="container">
     <div class="row">
@@ -12,15 +12,15 @@
                 </h2>
                 <p>
                 <ul align="left">
-                    <li>{{point.commercialType}}</li>
-                    <li>{{point.pointType}}</li>
-                    <li>{{point.point_id}}</li>
+                    <li>Свойство - {{point.commercialType}}</li>
+                    <li>Тип - {{point.pointType}}</li>
+                    <li>ID - {{point.point_id}}</li>
                 </ul>
-                <p align="left">Точку занес в базу: {{point.user}}</p>
+                <p align="left">Точку занес в базу: {{point.user}}, {{point.create}}</p>
 
                 {% if user.is_authenticated and user == point.user %}
                 <a href="{% url 'gas:point_update' pk=point.pk %}">
-                    <button type="button" class="btn btn-warning">Изменить</button>
+                    <button type="button" class="btn btn-primary">Изменить</button>
                 </a>
                 <a href="{% url 'gas:point_delete' pk=point.pk %}">
                     <button type="button" class="btn btn-danger">Удалить</button>
@@ -29,8 +29,36 @@
 
                     <button type="button" class="btn btn-warning">Вы не можете изменить эту точку</button>
 
-
                 {% endif %}
+
+                <hr>
+                {% if point_sinonims %}
+
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">Различные написания точки</span>
+                </h2>
+
+                <ul align="left">
+
+                    {% for sin in point_sinonims %}
+                    <li>{{sin.name}} (Занес {{sin.user}}, {{sin.create}}) </li>
+                    {% endfor %}
+
+                </ul>
+                {% else %}
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">У точки нет синономов</span>
+                </h2>
+                {% endif %}
+
+
+                <form method="post" action="{% url 'gas:sinonim_form' pk=object.pk%}">
+                    <span class="section-heading-upper">Добавить новый синоним или написание названия точки</span><br>
+                    {% csrf_token %}
+                    {{ form_sinonims.as_p }}
+                    <button type="submit" class="btn btn-success">Добавить в базу</button>
+
+                </form>
 
 
                 </p>

@@ -1,6 +1,6 @@
 import requests
 import time
-from influxdb import InfluxDBClient
+
 
 urls=('http://yandex.ru', 'http://rbc.ru', 'http://google.com')
 

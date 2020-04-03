@@ -4,6 +4,7 @@ from faker import Faker
 from my_user_app.models import MyUser, Place_of_job
 
 
+
 class OpenViewsTest(TestCase):
 
     def setUp(self):
