@@ -9,10 +9,13 @@ urlpatterns = [
     # path('point/<int:id>/', views.point, name='point'),
     path('send_mail/', views.send_mail, name='send_mail'),
     path('point_list/', views.PointListView.as_view(), name='point_list'),
-    path('point_detail/<int:pk>/', views.PointDetailView.as_view(), name='point_detail'),
+    # path('point_detail/<int:pk>/', views.PointDetailView.as_view(), name='point_detail'),
     path('point_update/<int:pk>/', views.PointUpdateView.as_view(), name='point_update'),
     path('point_delete/<int:pk>/', views.PointDeleteView.as_view(), name='point_delete'),
     path('new_point/', views.PointCreateView.as_view(), name='new_point'),
+    path('point_detail/<int:pk>/', views.PointDetailView.as_view(), name='point_detail'),
+    path('sinonim_form/<int:pk>', views.SinonimCreateView.as_view(), name='sinonim_form'),
+    path('parser/', views.pars_new_points_view, name='parser'),
 
 ]
 

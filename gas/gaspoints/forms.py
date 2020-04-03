@@ -1,8 +1,11 @@
 from django import forms
-from .models import Point
+from .models import Point, Sinonim
 
-class Sinonim_form(forms.Form):
-    point_sinonim=forms.CharField(label="Синоним")
+class Add_sinonim(forms.ModelForm):
+    class Meta:
+        model=Sinonim
+        # fields='__all__'
+        exclude = ('user', 'root_point')
 
 class SendMail(forms.Form):
     name=forms.CharField(label='Имя')
