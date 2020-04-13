@@ -8,13 +8,12 @@
             <div class="cta-inner text-center rounded">
                 <h2 class="section-heading mb-4">
                     <span class="section-heading-upper">Список точек транспортировки газа в Европе</span>
-                    <span class="section-heading-lower">ENTSOG (весь)</span>
+                    <span class="section-heading-lower">ENTSOG</span>
                 </h2>
                 <p>
                 <ul align="left">
                     {% for point in object_list%}
                     <a href="{% url 'gas:point_detail' pk=point.pk %}">
-
                         <li>{{point.pointLabel}}
                             {% if point.point_export_from %}
                                 {% if point.point_export_from == "LNG" %}, LNG terminal

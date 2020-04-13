@@ -8,6 +8,7 @@ from .forms import SendMail, Add_sinonim
 from django.core.mail import send_mail as Core_Send_Mail
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils.functional import cached_property
 
 # Create your views here.
 def main_view(request):
@@ -28,40 +29,68 @@ def send_mail(request):
         return render(request, 'gaspoints/send_mail.html', context={'mail_form': mail_form})
 
 class PointListView(ListView):
-    model = Point
-    tamplate_name = 'gaspoints/point_list.html'
-    paginate_by = 2000
+    queryset = Point.objects.select_related('point_export_from')
+    # model = Point
+    template_name = 'gaspoints/point_list.html'
+    paginate_by = 20
+
 
 class PointTypeView(ListView):
-    model = Point
-    tamplate_name = 'gaspoints/list_point_type.html'
-    paginate_by = 200
+    queryset = Point.objects.select_related('point_export_from')
+    # model = Point
+    template_name = 'gaspoints/list_point_type.html'
+    paginate_by = 20
 
     def get_queryset(self):
         my_cat=self.request.GET.get('type_pk')
-        return Point.objects.filter(pointType=PointType.objects.get(pk=my_cat))
+        return Point.objects.filter(pointType=PointType.objects.get(pk=my_cat)).select_related('point_export_from')
+
+    def get_context_data(self, **kwards):
+        my_type=self.request.GET.get('type_pk')
+        context = super(PointTypeView, self).get_context_data(**kwards)
+        context['point_type'] = PointType.objects.get(pk=my_type)
+        context['type_pk'] = my_type
+        return context
 
 class PointCategoryView(ListView):
-    model = Point
-    tamplate_name = 'gaspoints/list_category_type.html'
-    paginate_by = 200
+    queryset = Point.objects.select_related('point_export_from')
+    # model = Point
+    template_name = 'gaspoints/list_category_type.html'
+    paginate_by = 20
 
     def get_queryset(self):
         my_cat=self.request.GET.get('cat_pk')
-        return Point.objects.filter(commercialType=CommercialType.objects.get(pk=my_cat))
+        return Point.objects.filter(commercialType=CommercialType.objects.get(pk=my_cat)).select_related('point_export_from')
+
+    def get_context_data(self, **kwards):
+        my_cat=self.request.GET.get('cat_pk')
+        print('-------------------------------',my_cat)
+        context = super(PointCategoryView, self).get_context_data(**kwards)
+        context['commercial_type'] = CommercialType.objects.get(pk=my_cat)
+        context['cat_pk'] = my_cat
+        return context
 
 class PointListView_export(ListView):
-    model = Point
-    tamplate_name = 'gaspoints/list_export.html'
-    paginate_by = 200
+    queryset = Point.objects.select_related('point_export_from')
+    # model = Point
+    template_name = 'gaspoints/list_export.html'
+    # paginate_by = 200
 
     def get_queryset(self):
         my_cat=self.request.GET.get('export_pk')
-        return Point.objects.filter(point_export_from=ExportCountry.objects.get(pk=my_cat))
+        return Point.objects.filter(point_export_from=ExportCountry.objects.get(pk=my_cat)).select_related('point_export_from')
+
+    def get_context_data(self, **kwards):
+        my_country=self.request.GET.get('export_pk')
+        context = super(PointListView_export, self).get_context_data(**kwards)
+        context['export_country'] = ExportCountry.objects.get(pk=my_country)
+        context['export_pk'] = my_country
+        return context
 
 class PointDetailView(LoginRequiredMixin, DetailView):
+    # queryset = Point.objects.select_related('user')
     model = Point
-    tamplate_name = 'gaspoints/point_detail.html'
+    template_name = 'gaspoints/point_detail.html'
 
     def get_context_data(self, **kwards):
         context = super(PointDetailView, self).get_context_data(**kwards)
@@ -73,7 +102,7 @@ class PointCreateView(UserPassesTestMixin, CreateView):
     fields = ('pointKey', 'pointLabel', 'commercialType', 'pointType', 'point_id', 'point_map_x', 'point_map_y', 'point_export_from')
     model = Point
     success_url = reverse_lazy('gas:point_list')
-    tamplate_name = 'gaspoints/new_point.html'
+    template_name = 'gaspoints/new_point.html'
     login_url = 'users:login'
 
     def test_func(self):
@@ -90,10 +119,10 @@ class PointUpdateView(UpdateView):
     fields = ('pointKey', 'pointLabel', 'commercialType', 'pointType', 'point_id', )
     model = Point
     success_url = reverse_lazy('gas:point_list')
-    tamplate_name = 'gaspoints/point_detail.html'
+    template_name = 'gaspoints/point_detail.html'
 
 class PointDeleteView(DeleteView):
-    tamplate_name = 'gaspoints/point_confirm_delete.html'
+    template_name = 'gaspoints/point_confirm_delete.html'
     model = Point
     success_url = reverse_lazy('gas:point_list')
 

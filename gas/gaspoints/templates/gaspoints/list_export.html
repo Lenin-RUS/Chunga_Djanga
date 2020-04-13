@@ -10,17 +10,13 @@
                     <span class="section-heading-upper">Список точек транспортировки газа в Европе</span>
                     <span class="section-heading-lower">ENTSOG </span>
                 </h2>
-                <p>Выбрана категория точек - {{commercial_type}}</p>
+                <p>Точки экспорта газа - from {{export_country}}</p>
                 <p>
                 <ul align="left">
                     {% for point in object_list%}
                     <a href="{% url 'gas:point_detail' pk=point.pk %}">
                         <li>{{point.pointLabel}}
-                            {% if point.point_export_from %}
-                            {% if point.point_export_from == "LNG" %}, LNG terminal
-                            {% else %}, Export to EU from {{point.point_export_from}}
-                            {% endif %}
-                            {% endif %}
+
                         </li>
                     </a>
                     {% endfor %}
@@ -31,15 +27,15 @@
                     <div align="center"
                     <ul class="pagination">
                         {% if page_obj.has_previous %}
-                        <li class="page-item"><a class="page-link" href="?page=1&cat_pk={{cat_pk}}">1</a></li>
-                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&cat_pk={{cat_pk}}">Назад</a></li>
+                        <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&export_pk={{export_pk}}">Назад</a></li>
                         {% endif %}
 
-                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}&cat_pk={{cat_pk}}">Текущая - {{ page_obj.number }}</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}&export_pk={{export_pk}}">Текущая - {{ page_obj.number }}</a></li>
 
                         {% if page_obj.has_next %}
-                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&cat_pk={{cat_pk}}">Следующая</a></li>
-                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&cat_pk={{cat_pk}}">{{ page_obj.paginator.num_pages }}</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&export_pk={{export_pk}}">Следующая</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&export_pk={{export_pk}}">{{ page_obj.paginator.num_pages }}</a></li>
                         {% endif %}
                     </ul>
             </div>

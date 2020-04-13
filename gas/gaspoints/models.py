@@ -58,7 +58,6 @@ def pars():
     domain='https://transparency.entsog.eu/api/v1/connectionpoints'
     url=f'{domain}?limit=2000'
     result=requests.get(url).json()
-
     pointType=set([i['pointType'] for i in result['connectionpoints']])
     for i in pointType:
         try:
@@ -67,6 +66,7 @@ def pars():
             pass
 
     commercialType=set([i['commercialType'] for i in result['connectionpoints']])
+
     for i in commercialType:
         try:
             CommercialType.objects.create(name=str(i))
@@ -81,6 +81,7 @@ def pars():
             pass
 
     for i in result['connectionpoints']:
+        print(i)
         try:
             if i['importFromCountryLabel']:
                 Point.objects.create(pointKey=i['pointKey'], pointLabel=i['pointLabel'], point_id=i['id'],
@@ -95,6 +96,7 @@ def pars():
                                      commercialType=CommercialType.objects.get(name=i['commercialType']),
                                      pointType=PointType.objects.get(name=i['pointType']),
                                      user=MyUser.objects.get(username='Lenin'))
+            new_points.append(i['pointLabel'])
         except:
             pass
 
