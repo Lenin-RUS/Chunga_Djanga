@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from .models import Point, Sinonim, pars
+from .models import Point, Sinonim, pars, CommercialType, PointType, ExportCountry
 from .forms import SendMail, Add_sinonim
 from django.core.mail import send_mail as Core_Send_Mail
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -11,28 +11,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def main_view(request):
-    points = Point.objects.all()
-    return render(request, 'gaspoints/index.html', context={'points': points})
-
-
-# def point(request, id):
-#     point = get_object_or_404(Point, id=id)
-#     sinonim = Sinonim.objects.filter(root_point=id)
-#     if request.method == 'POST':
-#         form = Sinonim_form(request.POST)
-#         if form.is_valid():
-#             new_sinonim = form.cleaned_data['point_sinonim']
-#             try:
-#                 Sinonim.objects.create(name=new_sinonim, root_point=Point.objects.filter(id=id).first())
-#             except:
-#                 pass
-#             return render(request, 'gaspoints/point.html', context={'point': point, 'sinonims': sinonim, 'form': form})
-#         else:
-#             return render(request, 'gaspoints/point.html', context={'point': point, 'sinonims': sinonim, 'form': form})
-#     else:
-#         form = Sinonim_form
-#         return render(request, 'gaspoints/point.html', context={'point': point, 'sinonims': sinonim, 'form': form})
-
+    return render(request, 'gaspoints/index.html')
 
 def send_mail(request):
     if request.method == 'POST':
@@ -48,26 +27,37 @@ def send_mail(request):
         mail_form = SendMail
         return render(request, 'gaspoints/send_mail.html', context={'mail_form': mail_form})
 
-
-# def add_point(request):
-#     if request.method == 'GET':
-#         form = Add_point()
-#         return render(request, 'gaspoints/add_point.html', context={'form': form})
-#     else:
-#         form = Add_point(request.POST)
-#         if form.is_valid():
-#             form.instance.user = request.user
-#             form.save()
-#             return HttpResponseRedirect('/')
-#         else:
-#             return render(request, 'gaspoints/add_point.html', context={'form': form})
-
-
 class PointListView(ListView):
     model = Point
     tamplate_name = 'gaspoints/point_list.html'
-    paginate_by = 20
+    paginate_by = 2000
 
+class PointTypeView(ListView):
+    model = Point
+    tamplate_name = 'gaspoints/list_point_type.html'
+    paginate_by = 200
+
+    def get_queryset(self):
+        my_cat=self.request.GET.get('type_pk')
+        return Point.objects.filter(pointType=PointType.objects.get(pk=my_cat))
+
+class PointCategoryView(ListView):
+    model = Point
+    tamplate_name = 'gaspoints/list_category_type.html'
+    paginate_by = 200
+
+    def get_queryset(self):
+        my_cat=self.request.GET.get('cat_pk')
+        return Point.objects.filter(commercialType=CommercialType.objects.get(pk=my_cat))
+
+class PointListView_export(ListView):
+    model = Point
+    tamplate_name = 'gaspoints/list_export.html'
+    paginate_by = 200
+
+    def get_queryset(self):
+        my_cat=self.request.GET.get('export_pk')
+        return Point.objects.filter(point_export_from=ExportCountry.objects.get(pk=my_cat))
 
 class PointDetailView(LoginRequiredMixin, DetailView):
     model = Point
@@ -80,7 +70,7 @@ class PointDetailView(LoginRequiredMixin, DetailView):
         return context
 
 class PointCreateView(UserPassesTestMixin, CreateView):
-    fields = ('pointKey', 'pointLabel', 'commercialType', 'pointType', 'point_id', )
+    fields = ('pointKey', 'pointLabel', 'commercialType', 'pointType', 'point_id', 'point_map_x', 'point_map_y', 'point_export_from')
     model = Point
     success_url = reverse_lazy('gas:point_list')
     tamplate_name = 'gaspoints/new_point.html'
@@ -96,13 +86,11 @@ class PointCreateView(UserPassesTestMixin, CreateView):
         form.instance.user = self.request.user
         return super().form_valid(form)
 
-
 class PointUpdateView(UpdateView):
     fields = ('pointKey', 'pointLabel', 'commercialType', 'pointType', 'point_id', )
     model = Point
     success_url = reverse_lazy('gas:point_list')
     tamplate_name = 'gaspoints/point_detail.html'
-
 
 class PointDeleteView(DeleteView):
     tamplate_name = 'gaspoints/point_confirm_delete.html'
@@ -114,12 +102,10 @@ def pars_new_points_view(request):
     new_points = pars()
     return render(request, 'gaspoints/parser.html', context={'new_points': new_points})
 
-
 class SinonimCreateView(CreateView):
     tamplate_name = 'gaspoints/point_detail.html'
     form_class=Add_sinonim
     model = Sinonim
-    # success_url = reverse_lazy('gas:sinonim_form')
 
     def post(self, request, *args, **kwargs):
         self.point_pk = kwargs['pk']

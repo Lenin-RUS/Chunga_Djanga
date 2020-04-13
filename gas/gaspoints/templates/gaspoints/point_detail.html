@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-
 {% block title %} {{ point.pointLabel|upper }} {% endblock %}
 {% block content %}
+
+
 <div class="container">
     <div class="row">
         <div class="col-xl-9 mx-auto">
@@ -12,9 +13,36 @@
                 </h2>
                 <p>
                 <ul align="left">
-                    <li>Свойство - {{point.commercialType}}</li>
-                    <li>Тип - {{point.pointType}}</li>
+                    <li>Свойство -
+                        <a href="{% url 'gas:list_category_type' %}?cat_pk={{ point.commercialType.pk }}">
+                        {{point.commercialType}}
+                        </a>
+                    </li>
+                    <li>Тип -
+                        <a href="{% url 'gas:list_point_type' %}?type_pk={{ point.pointType.pk }}">
+                            {{point.pointType}}
+                        </a>
+                    </li>
                     <li>ID - {{point.point_id}}</li>
+
+                {% if point.point_map_x > 0 %}
+                    <li> координата X = {{point.point_map_x}} </li>
+                    <li> координата Y = {{point.point_map_y}} </li>
+                {% endif %}
+
+                {% if point.point_export_from %}
+                    {% if point.point_export_from == "LNG" %}
+                        <li> LNG terminal </li>
+                    {% else %}
+                        <li> Export to EU from
+                            <a href="{% url 'gas:list_export' %}?export_pk={{ point.point_export_from.pk }}">
+                                {{point.point_export_from}}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+
+
                 </ul>
                 <p align="left">Точку занес в базу: {{point.user}}, {{point.create}}</p>
 
