@@ -16,6 +16,8 @@ urlpatterns = [
     path('point_detail/<int:pk>/', views.PointDetailView.as_view(), name='point_detail'),
     path('sinonim_form/<int:pk>', views.SinonimCreateView.as_view(), name='sinonim_form'),
     path('parser/', views.pars_new_points_view, name='parser'),
-
+    path('list_point_type/', views.PointTypeView.as_view(), name='list_point_type'),
+    path('list_category_type/', views.PointCategoryView.as_view(), name='list_category_type'),
+    path('list_export/', views.PointListView_export.as_view(), name='list_export'),
 ]
 

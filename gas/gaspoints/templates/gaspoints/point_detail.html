@@ -1,28 +1,56 @@
 {% extends "base.html" %}
-
 {% block title %} {{ point.pointLabel|upper }} {% endblock %}
 {% block content %}
+{% with my_point=point %}
+
 <div class="container">
     <div class="row">
         <div class="col-xl-9 mx-auto">
             <div class="cta-inner text-center rounded">
                 <h2 class="section-heading mb-4">
-                    <span class="section-heading-upper">{{point.pointKey}}</span>
-                    <span class="section-heading-lower">{{point.pointLabel}}</span>
+                    <span class="section-heading-upper">{{my_point.pointKey}}</span>
+                    <span class="section-heading-lower">{{my_point.pointLabel}}</span>
                 </h2>
                 <p>
                 <ul align="left">
-                    <li>Свойство - {{point.commercialType}}</li>
-                    <li>Тип - {{point.pointType}}</li>
-                    <li>ID - {{point.point_id}}</li>
-                </ul>
-                <p align="left">Точку занес в базу: {{point.user}}, {{point.create}}</p>
+                    <li>Свойство -
+                        <a href="{% url 'gas:list_category_type' %}?cat_pk={{ my_point.commercialType.pk }}">
+                        {{my_point.commercialType}}
+                        </a>
+                    </li>
+                    <li>Тип -
+                        <a href="{% url 'gas:list_point_type' %}?type_pk={{ my_point.pointType.pk }}">
+                            {{my_point.pointType}}
+                        </a>
+                    </li>
+                    <li>ID - {{my_point.point_id}}</li>
 
-                {% if user.is_authenticated and user == point.user %}
-                <a href="{% url 'gas:point_update' pk=point.pk %}">
+                {% if my_point.point_map_x > 0 %}
+                    <li> координата X = {{my_point.point_map_x}} </li>
+                    <li> координата Y = {{my_point.point_map_y}} </li>
+                {% endif %}
+
+                {% if my_point.point_export_from %}
+                    {% if my_point.point_export_from == "LNG" %}
+                        <li> LNG terminal </li>
+                    {% else %}
+                        <li> Export to EU from
+                            <a href="{% url 'gas:list_export' %}?export_pk={{ my_point.point_export_from.pk }}">
+                                {{my_point.point_export_from}}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+
+
+                </ul>
+                <p align="left">Точку занес в базу: {{my_point.user.username}}, {{my_point.create}}</p>
+
+                {% if user.is_authenticated and user == my_point.user %}
+                <a href="{% url 'gas:point_update' pk=my_point.pk %}">
                     <button type="button" class="btn btn-primary">Изменить</button>
                 </a>
-                <a href="{% url 'gas:point_delete' pk=point.pk %}">
+                <a href="{% url 'gas:point_delete' pk=my_point.pk %}">
                     <button type="button" class="btn btn-danger">Удалить</button>
                 </a>
                 {% else %}
@@ -41,7 +69,7 @@
                 <ul align="left">
 
                     {% for sin in point_sinonims %}
-                    <li>{{sin.name}} (Занес {{sin.user}}, {{sin.create}}) </li>
+                    <li>{{sin.name}} (Занес {{sin.user.username}}, {{sin.create}}) </li>
                     {% endfor %}
 
                 </ul>
@@ -66,4 +94,5 @@
         </div>
     </div>
 </div>
+{% endwith %}
 {% endblock %}

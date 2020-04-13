@@ -16,6 +16,9 @@ class TimeStapm(models.Model):
     class Meta:
         abstract=True
 
+class ExportCountry(AddNameTotable):
+    def __str__(self):
+        return self.name
 
 class CommercialType(AddNameTotable):
     def __str__(self):
@@ -32,6 +35,9 @@ class Point(TimeStapm):
     pointType=models.ForeignKey(PointType, on_delete=models.CASCADE)
     point_id=models.CharField(max_length=32, unique=True)
     user=models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True, blank=True)
+    point_map_x=models.FloatField(null=True, blank=True)
+    point_map_y=models.FloatField(null=True, blank=True)
+    point_export_from=models.ForeignKey(ExportCountry, on_delete=models.CASCADE, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
@@ -60,21 +66,41 @@ def pars():
             pass
 
     commercialType=set([i['commercialType'] for i in result['connectionpoints']])
+
     for i in commercialType:
         try:
             CommercialType.objects.create(name=str(i))
         except:
             pass
-    for i in result['connectionpoints']:
+
+    importFromCountryLabel=set([i['importFromCountryLabel'] for i in result['connectionpoints']])
+    for i in importFromCountryLabel:
         try:
-            Point.objects.create(pointKey=i['pointKey'], pointLabel=i['pointLabel'], point_id=i['id'],
-                                 commercialType=CommercialType.objects.get(name=i['commercialType']),
-                                 pointType=PointType.objects.get(name=i['pointType']),
-                                 user=MyUser.objects.get(username='Lenin'))
+            ExportCountry.objects.create(name=str(i))
+        except:
+            pass
+
+    for i in result['connectionpoints']:
+        print(i)
+        try:
+            if i['importFromCountryLabel']:
+                Point.objects.create(pointKey=i['pointKey'], pointLabel=i['pointLabel'], point_id=i['id'],
+                                     point_map_x=i['tpMapX'], point_map_y=i['tpMapY'],
+                                     point_export_from=ExportCountry.objects.get(name=i['importFromCountryLabel']),
+                                     commercialType=CommercialType.objects.get(name=i['commercialType']),
+                                     pointType=PointType.objects.get(name=i['pointType']),
+                                     user=MyUser.objects.get(username='Lenin'))
+            else:
+                Point.objects.create(pointKey=i['pointKey'], pointLabel=i['pointLabel'], point_id=i['id'],
+                                     point_map_x=i['tpMapX'], point_map_y=i['tpMapY'],
+                                     commercialType=CommercialType.objects.get(name=i['commercialType']),
+                                     pointType=PointType.objects.get(name=i['pointType']),
+                                     user=MyUser.objects.get(username='Lenin'))
             new_points.append(i['pointLabel'])
         except:
             pass
-      # сразу к ней добавим первый синоним
+
+        # сразу к ней добавим первый синоним
     for i in result['connectionpoints']:
         try:
             Sinonim.objects.create(name=i['pointLabel'],
@@ -82,5 +108,5 @@ def pars():
                                    user=MyUser.objects.get(username='Lenin'))
         except:
             pass
-    print(new_points)
+
     return new_points

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %} Список всех точек {% endblock %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 mx-auto">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">Список точек транспортировки газа в Европе</span>
+                    <span class="section-heading-lower">ENTSOG</span>
+                </h2>
+                <p>Выбран тип точки - {{point_type}}</p>
+                <p>
+                <ul align="left">
+                    {% for point in object_list%}
+                    <a href="{% url 'gas:point_detail' pk=point.pk %}">
+                        <li>{{point.pointLabel}}
+                            {% if point.point_export_from %}
+                            {% if point.point_export_from == "LNG" %}, LNG terminal
+                            {% else %}, Export to EU from {{point.point_export_from}}
+                            {% endif %}
+                            {% endif %}
+                        </li>
+                    </a>
+                    {% endfor %}
+                </ul>
+                </p>
+                <p>Навигация по списку</p>
+                <nav>
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1&cat_pk={{cat_pk}}">1</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&type_pk={{type_pk}}">Назад</a></li>
+                        {% endif %}
+
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.number }}&type_pk={{type_pk}}">Текущая - {{ page_obj.number }}</a></li>
+
+                        {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&type_pk={{type_pk}}">Следующая</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&type_pk={{type_pk}}">{{ page_obj.paginator.num_pages }}</a></li>
+                        {% endif %}
+                    </ul>
+            </div>
+            </nav>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
