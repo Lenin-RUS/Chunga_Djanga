@@ -7,8 +7,6 @@ from .models import Point, Sinonim, pars, CommercialType, PointType, ExportCount
 from .forms import SendMail, Add_sinonim
 from django.core.mail import send_mail as Core_Send_Mail
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.utils.functional import cached_property
 
 # Create your views here.
 def main_view(request):
@@ -99,6 +97,7 @@ class PointDetailView(LoginRequiredMixin, DetailView):
         return context
 
 class PointCreateView(UserPassesTestMixin, CreateView):
+    print('------------------1')
     fields = ('pointKey', 'pointLabel', 'commercialType', 'pointType', 'point_id', 'point_map_x', 'point_map_y', 'point_export_from')
     model = Point
     success_url = reverse_lazy('gas:point_list')
