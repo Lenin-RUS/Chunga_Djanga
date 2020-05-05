@@ -16,11 +16,24 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from rest_framework import routers
+from gaspoints.api_views import PointViewSet, ExportCountriesViewSet, CommercialTypeViewSet, PointTypeViewSet, SinonimViewSet
+
+router = routers.DefaultRouter()
+router.register(r'points_api', PointViewSet)
+router.register(r'exportcountries_api', ExportCountriesViewSet)
+router.register(r'CommercialTypeSerializer_api', CommercialTypeViewSet)
+router.register(r'PointTypeSerialize_api', PointTypeViewSet)
+router.register(r'SinonimSerializer_api', SinonimViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('gaspoints.urls', namespace='gas')),
-    path('users/', include('my_user_app.urls', namespace='users'))
+    path('users/', include('my_user_app.urls', namespace='users')),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/v0/', include(router.urls)),
+
 ]
 
 if settings.DEBUG:

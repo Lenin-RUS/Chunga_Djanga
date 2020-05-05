@@ -81,7 +81,7 @@ def pars():
             pass
 
     for i in result['connectionpoints']:
-        print(i)
+        # print(i)
         try:
             if i['importFromCountryLabel']:
                 Point.objects.create(pointKey=i['pointKey'], pointLabel=i['pointLabel'], point_id=i['id'],
