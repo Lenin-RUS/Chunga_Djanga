@@ -4,6 +4,8 @@ from rest_framework import routers, serializers, viewsets
 
 # Serializers define the API representation.
 class PointSerializer(serializers.HyperlinkedModelSerializer):
+    pointType=serializers.StringRelatedField()
+    commercialType=serializers.StringRelatedField()
     class Meta:
         model = Point
         exclude = ['user']
@@ -24,6 +26,7 @@ class PointTypeSerializer(serializers.HyperlinkedModelSerializer):
         fields = '__all__'
 
 class SinonimSerializer(serializers.HyperlinkedModelSerializer):
+    # root_point=serializers.StringRelatedField()
     class Meta:
         model = Sinonim
         exclude = ['user']
