@@ -34,3 +34,21 @@ class OpenViewsTest(TestCase):
         response = self.client.get('/new_point/')
         print('Answer:  ',response.status_code)
         self.assertEqual(response.status_code, 200)
+
+    def api_login_required_superuser(self):
+        job=Place_of_job.objects.create(name='Gascade')
+        MyUser.objects.create_user(username='Lenin_user', email='test@test.com', password='Slanin742', job=job, is_superuser=1)
+
+        # Это видно всем
+        response = self.client.get('/api/v0/points_api/')
+        self.assertEqual(response.status_code, 200)
+
+        # Это видно только загонненным
+        response = self.client.get('/api/v0/CommercialTypeSerializer_api/')
+        self.assertEqual(response.status_code, 401)
+
+        # Логинимся
+        self.client.login(username='Lenin_user', password='Slanin742')
+        response = self.client.get('/api/v0/CommercialTypeSerializer_api/')
+        print('Answer:  ',response.status_code)
+        self.assertEqual(response.status_code, 200)

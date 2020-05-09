@@ -1,0 +1,28 @@
+
+{% extends "base.html" %}
+
+{% block title %} LOGIN {% endblock %}
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-xl-9 mx-auto">
+            <div class="cta-inner text-center rounded">
+                <h2 class="section-heading mb-4">
+                    <span class="section-heading-upper">Данные профиля пользователя {{object.username}}</span>
+                </h2>
+                <p>
+                <hr>
+                <p>Логин: {{object.username}} </p>
+                <p>Адрес почты: {{object.email}} </p>
+                <p>Место работы: {{object.Place_of_job.pk}} </p>
+                <p>Токен пользователя: {% if object.auth_token %} {{object.auth_token}} {% else %} Токен не сгенерирован {% endif %}
+                <form action = " {% url 'users:update_token' %} "><button type="submit" class="btn btn-primary">Изменить</button></form></p>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

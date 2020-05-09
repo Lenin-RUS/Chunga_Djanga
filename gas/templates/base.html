@@ -57,7 +57,7 @@
 
                 {% if user.is_authenticated %}
                 <li class="nav-item px-lg-4">
-                    <p class="nav-link text-uppercase text-expanded">Вы вошли под именем {{user.username}}</p>
+                    <a class="nav-link text-uppercase text-expanded" href="{% url 'users:profile' pk=user.pk %}">Профиль {{user.username}}</a>
                 </li>
 
                 <li class="nav-item px-lg-4">
