@@ -1,7 +1,7 @@
 
 {% extends "base.html" %}
 
-{% block title %} LOGIN {% endblock %}
+{% block title %} Профиль пользователя {% endblock %}
 {% block content %}
 
 
@@ -17,12 +17,16 @@
                 <p>Логин: {{object.username}} </p>
                 <p>Адрес почты: {{object.email}} </p>
                 <p>Место работы: {{object.Place_of_job.pk}} </p>
-                <p>Токен пользователя: {% if object.auth_token %} {{object.auth_token}} {% else %} Токен не сгенерирован {% endif %}
-                <form action = " {% url 'users:update_token' %} "><button type="submit" class="btn btn-primary">Изменить</button></form></p>
-                </p>
+                <p>Токен пользователя:
+                    <span id="token">
+                    {% if object.auth_token %} {{object.auth_token}} {% else %} Токен не сгенерирован {% endif %}
+                    </span>
+                    <!-- <form action = " {% url 'users:update_token' %} "><button type="submit" class="btn btn-primary">Изменить</button></form>  -->
+                    <br><button type="button" id="ajax-button" class="btn btn-warning">Изменить через AJAX</button></p>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-{% endblock %}
+    {% endblock %}

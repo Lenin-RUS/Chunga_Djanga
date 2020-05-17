@@ -17,14 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from rest_framework import routers
-from gaspoints.api_views import PointViewSet, ExportCountriesViewSet, CommercialTypeViewSet, PointTypeViewSet, SinonimViewSet
+from gaspoints.api_views import PointViewSet, ExportCountriesViewSet, CommercialTypeViewSet, PointTypeViewSet, SinonimViewSet, SelectedPoints
 
 router = routers.DefaultRouter()
-router.register(r'points_api', PointViewSet)
-router.register(r'exportcountries_api', ExportCountriesViewSet)
-router.register(r'CommercialTypeSerializer_api', CommercialTypeViewSet)
-router.register(r'PointTypeSerialize_api', PointTypeViewSet)
-router.register(r'SinonimSerializer_api', SinonimViewSet)
+router.register(r'Points', PointViewSet)
+router.register(r'Export_Countries', ExportCountriesViewSet)
+router.register(r'Commercial_Types', CommercialTypeViewSet)
+router.register(r'Point_Types', PointTypeViewSet)
+router.register(r'Sinonims', SinonimViewSet)
+# router.register(r'Sin_points', PointAPIView.as_view(), basename='Sin_points')
 
 
 urlpatterns = [
@@ -33,7 +34,7 @@ urlpatterns = [
     path('users/', include('my_user_app.urls', namespace='users')),
     path('api-auth/', include('rest_framework.urls')),
     path('api/v0/', include(router.urls)),
-
+    path('SelPoints/<str:point>/', SelectedPoints.as_view()),
 ]
 
 if settings.DEBUG:

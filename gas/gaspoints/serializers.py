@@ -30,3 +30,10 @@ class SinonimSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Sinonim
         exclude = ['user']
+
+class SinonimSerializer_2(serializers.HyperlinkedModelSerializer):
+    root_point=serializers.StringRelatedField()
+    class Meta:
+        model = Sinonim
+        exclude = ['user', 'create', 'update']
+
