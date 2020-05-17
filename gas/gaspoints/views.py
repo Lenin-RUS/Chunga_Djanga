@@ -7,6 +7,8 @@ from .models import Point, Sinonim, pars, CommercialType, PointType, ExportCount
 from .forms import SendMail, Add_sinonim
 from django.core.mail import send_mail as Core_Send_Mail
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 # Create your views here.
 def main_view(request):
@@ -62,7 +64,7 @@ class PointCategoryView(ListView):
 
     def get_context_data(self, **kwards):
         my_cat=self.request.GET.get('cat_pk')
-        print('-------------------------------',my_cat)
+        print('-------------------------------', my_cat)
         context = super(PointCategoryView, self).get_context_data(**kwards)
         context['commercial_type'] = CommercialType.objects.get(pk=my_cat)
         context['cat_pk'] = my_cat

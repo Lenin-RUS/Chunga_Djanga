@@ -1,5 +1,5 @@
 from django.contrib.auth.views import LoginView, LogoutView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy, reverse
 from rest_framework.authtoken.models import Token
 from .forms import RegistrationForm
@@ -30,3 +30,13 @@ def update_token(request):
         pass
     Token.objects.create(user=user)
     return HttpResponseRedirect(reverse('users:profile', kwargs={'pk': user.pk}))
+
+
+def update_token_ajax(request):
+    user = request.user
+    try:
+        user.auth_token.delete()
+    except:
+        pass
+    token = Token.objects.create(user=user)
+    return JsonResponse({'key' : token.key})

@@ -1,9 +1,8 @@
-from django.conf.urls import url, include
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
-
+from rest_framework.response import Response
 from .models import Point, ExportCountry, CommercialType, PointType, Sinonim
-from rest_framework import routers, serializers, viewsets
-from .serializers import PointSerializer, ExportCountrySerializer, CommercialTypeSerializer, PointTypeSerializer, SinonimSerializer
+from rest_framework import viewsets, generics
+from rest_framework.views import APIView
+from .serializers import PointSerializer, ExportCountrySerializer, CommercialTypeSerializer, PointTypeSerializer, SinonimSerializer, SinonimSerializer_2
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from .permissions import ReadOnly, MyPermission
 
@@ -33,3 +32,9 @@ class SinonimViewSet(viewsets.ModelViewSet):
     permission_classes = [ReadOnly]
     queryset = Sinonim.objects.all()
     serializer_class = SinonimSerializer
+
+class SelectedPoints(generics.ListAPIView):
+    serializer_class = SinonimSerializer_2
+    def get_queryset(self):
+        point = self.kwargs['point']
+        return Sinonim.objects.filter(name__contains=point)
