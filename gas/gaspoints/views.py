@@ -64,7 +64,6 @@ class PointCategoryView(ListView):
 
     def get_context_data(self, **kwards):
         my_cat=self.request.GET.get('cat_pk')
-        print('-------------------------------', my_cat)
         context = super(PointCategoryView, self).get_context_data(**kwards)
         context['commercial_type'] = CommercialType.objects.get(pk=my_cat)
         context['cat_pk'] = my_cat
@@ -99,7 +98,6 @@ class PointDetailView(LoginRequiredMixin, DetailView):
         return context
 
 class PointCreateView(UserPassesTestMixin, CreateView):
-    print('------------------1')
     fields = ('pointKey', 'pointLabel', 'commercialType', 'pointType', 'point_id', 'point_map_x', 'point_map_y', 'point_export_from')
     model = Point
     success_url = reverse_lazy('gas:point_list')

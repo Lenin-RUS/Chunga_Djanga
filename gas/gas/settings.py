@@ -25,7 +25,7 @@ SECRET_KEY = 'gu(uki8rpot64*ba($jywln7r9f62he5-h55)fsp6-ot8zo6la'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['194.67.86.157']
 
 
 # Application definition
@@ -49,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.cs rf.CsrfViewMiddleware',        # -------------- ВЕРНУТЬ!!!!
+    'django.middleware.csrf.CsrfViewMiddleware',        # -------------- ВЕРНУТЬ!!!!
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -135,7 +135,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS =[os.path.join(BASE_DIR, 'static')]
+#STATICFILES_DIRS =[os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL ='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR, 'media')

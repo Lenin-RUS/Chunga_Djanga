@@ -5,7 +5,7 @@ import requests
 
 # Create your models here.
 class AddNameTotable(models.Model):
-    name=models.CharField(max_length=32, unique=True)
+    name=models.CharField(max_length=100, unique=True)
     class Meta:
         abstract=True
 
