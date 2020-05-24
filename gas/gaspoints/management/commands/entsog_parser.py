@@ -42,7 +42,7 @@ class Command(BaseCommand):
                 pass
 
 
-        for i in result['connectionpoints']:
+        for i in result['connectionpoints'][:2000]:
             try:
                 if i['importFromCountryLabel']:
                     Point.objects.create(pointKey=i['pointKey'], pointLabel=i['pointLabel'], point_id=i['id'],
